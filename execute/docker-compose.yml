@@ -1,0 +1,27 @@
+services:
+  mongodb-mass-transportation-id:
+    image: mongo:latest
+    container_name: "mongodb-mass-transportation"
+    ports:
+      - 27017:27017
+  
+  rabbitmq-mass-transportation-id:
+    image: rabbitmq:management
+    container_name: "rabbitmq-mass-transportation"
+    restart: always
+    tty: true
+    stdin_open: true
+    volumes:
+      - ./enable_plugins:/rabbitmq/enable_plugins:ro
+    ports:
+      - 5672:5672
+      - 15672:15672
+
+  spring-mass-transportation-id:
+    image: spring-mass-transportation-image:1.0
+    container_name: "spring-mass-transportation"
+    ports:
+      - 8080:8080
+    links:
+      - mongodb-mass-transportation-id
+      - rabbitmq-mass-transportation-id

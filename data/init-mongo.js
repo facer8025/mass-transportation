@@ -6,3 +6,4 @@ db.createUser(
     },
   );
   db.createCollection('transactions');
+  db.createCollection('daily-sumary');

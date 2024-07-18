@@ -1,8 +1,6 @@
 package com.softka.massive_trasport.massive_transport_api.controllers;
 
-import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.annotation.EnableRabbit;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,27 +23,18 @@ public class TransactionController {
     @Autowired
     private ITransactionService service;
 
-    @Autowired
-    private RabbitTemplate rabbit;
-
-    @Autowired
-    private Queue transactionQueue;
-
     @GetMapping("/saludo")
     public String saludo() {
         return "Hola!";
     }
 
     @PostMapping
-    public ResponseEntity<String> post(@RequestBody Transaction transaction) {
-        Transaction transactionTmp = new Transaction();
+    public ResponseEntity<String> post(@RequestBody Transaction transaction) {        
 
         try {
             /** Se guarda la transacción en base */
-            transactionTmp = service.save(transaction);
-
-            /** Se publica la transacción en Rabbit */
-            rabbit.convertAndSend(transactionQueue.getName(), transactionTmp);
+            service.save(transaction);
+            
         } catch (Exception e) {
             log.error("Exception ", e);
         }

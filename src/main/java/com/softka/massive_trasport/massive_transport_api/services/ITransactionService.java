@@ -8,6 +8,6 @@ public interface ITransactionService {
 
     List<Transaction> findAll();
 
-    Transaction save(Transaction transaction);
+    void save(Transaction transaction);
 
 }

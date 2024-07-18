@@ -22,7 +22,8 @@ public class DailySummaryService implements IDailySummaryService {
     @Autowired
     private IDailySummaryRepository dailySummaryRepository;
 
-    @Scheduled(cron = "0 0 0 * * *")
+    // @Scheduled(cron = "0 0 0 * * *")
+    @Scheduled(cron = "10 * * * * *")
     public void generateDailySumary() {
 
         LocalDate today = LocalDate.now();
