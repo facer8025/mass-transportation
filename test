@@ -1,0 +1,10 @@
+#!/bin/bash
+
+file_path="test-10000-json.txt"
+data='{"key":"value"}'
+
+while IFS= read -r line
+do
+     curl -X POST -H 'Content-Type: application/json' -d  "$line"  http://localhost:8080/api/transactions
+     echo -e "\n"
+done < "$file_path"
