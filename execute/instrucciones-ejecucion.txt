@@ -12,7 +12,7 @@ cd mass-transportation
 # Generar el jar
 $ ./mvnw clean package
 
-# Grear la imagene
+# Generar la imagene
 $ docker build -t spring-mass-transportation-image:1.0 .
 
 # Ingresar al directorio del docker-compose.yml
