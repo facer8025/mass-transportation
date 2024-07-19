@@ -1,11 +1,14 @@
 package com.softka.massive_trasport.massive_transport_api.services;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,6 +27,8 @@ public class TransactionService implements ITransactionService {
     @Autowired
     private Queue transactionQueue;
 
+    private final List<Transaction> transactionBuffer = new CopyOnWriteArrayList<>();
+
     @Override
     public List<Transaction> findAll() {
         return repository.findAll();
@@ -34,11 +39,26 @@ public class TransactionService implements ITransactionService {
     @Transactional
     public void save(Transaction transaction) {
 
-        Transaction transactionTmp = new Transaction();
+        transactionBuffer.add(transaction);
 
-        transactionTmp = repository.save(transaction);
-        /** Se publica la transacción en Rabbit */
-        rabbit.convertAndSend(transactionQueue.getName(), transactionTmp);
+    }
+
+    @Scheduled(fixedRate = 10000)
+    public void processBatch() {
+        
+        if (!transactionBuffer.isEmpty()) {
+            /** Se crea una copia de la lista transactionsBuffer */
+            List<Transaction> transactionsSave = new ArrayList<>(transactionBuffer);
+            /** Se limpia transactionsBuffer para que pueda ser llanda de nuevo */
+            transactionBuffer.clear();
+            /** Guardamos las transacciones */
+            repository.saveAll(transactionsSave);
+            /** Publicamos las transacciones */
+            transactionsSave.forEach(transaction -> {
+                rabbit.convertAndSend(transactionQueue.getName(), transaction);
+            });
+        }
+
     }
 
 }

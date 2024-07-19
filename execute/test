@@ -2,7 +2,12 @@
 
 file_path="test-10000-json.txt"
 
+hora_ini=`date +"%H:%M:%S"`
+
 while IFS= read -r line
 do
   curl -X POST -H 'Content-Type: application/json' -d  "$line"  http://localhost:8080/api/transactions
 done < "$file_path"
+
+hora_fin=`date +"%H:%M:%S"`
+echo "[$hora_ini] - [$hora_fin]"
