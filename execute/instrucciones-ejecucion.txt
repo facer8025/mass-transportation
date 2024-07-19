@@ -1,0 +1,35 @@
+# Esta prueba fue desarrollada en Windows 10
+# Utilizando el subsistema WSL2 Ubuntu Linux
+
+# Instalación del servicio
+
+# para clonar el repositorio de git utilizar la siguiente ruta:
+$ git clone https://github.com/facer8025/mass-transportation.git
+
+# Ingrear al directorio del proyecto
+cd mass-transportation
+
+# Generar el jar
+$ ./mvnw clean package
+
+# Ingresar al directorio del docker-compose.yml
+cd execute
+
+# En la ruta del docker-compose.yml ejecutar el comando
+# "docker-compose up -d" el cual descargará las imagenes 
+# de mongo y rabbitmq necesarias para ejecutar la api
+# Versión usadas: mongo:latest y rabbitmq:managment
+$ docker-compose up -d
+
+# Una vez lanzado el servicio se puede ejecutar el script ./test ubicado 
+# en el directorio ./execute que consumirá, mediante un ciclo, la api:
+# http://localhost:8080/api/transactions
+# enviando todos los objetos json ubibicados en el fichero
+# test-10000-json.txt
+$ ./test 
+
+# La documentación de la api se realizó mediante springdoc y se 
+# puede consultar en la dirección:
+http://localhost:8080/doc/swagger-ui/index.html
+
+
