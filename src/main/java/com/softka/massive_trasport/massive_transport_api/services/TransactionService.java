@@ -2,6 +2,7 @@ package com.softka.massive_trasport.massive_transport_api.services;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.springframework.amqp.core.Queue;
@@ -28,6 +29,11 @@ public class TransactionService implements ITransactionService {
     private Queue transactionQueue;
 
     private final List<Transaction> transactionBuffer = new CopyOnWriteArrayList<>();
+
+    @Override
+    public Optional<Transaction> findByUserId(String userId) {
+        return repository.findByUserId(userId);
+    }
 
     @Override
     public List<Transaction> findAll() {
@@ -60,5 +66,4 @@ public class TransactionService implements ITransactionService {
         }
 
     }
-
 }

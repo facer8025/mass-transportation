@@ -12,7 +12,7 @@ import lombok.Data;
 import lombok.ToString;
 
 @Data
-@Document(collation = "transactions")
+@Document(collection = "transactions")
 @ToString
 public class Transaction implements Serializable {
 
