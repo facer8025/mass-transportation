@@ -21,8 +21,9 @@ cd execute
 # Versión usadas: mongo:latest y rabbitmq:managment
 $ docker-compose up -d
 
-# Una vez lanzado el servicio se puede ejecutar el script ./test ubicado 
-# en el directorio ./execute que consumirá, mediante un ciclo, la api:
+# Una vez lanzado el servicio y desde otra terminal se puede ejecutar 
+# el script ./test ubicado en el directorio ./execute que consumirá, 
+# mediante un ciclo, la api:
 # http://localhost:8080/api/transactions
 # enviando todos los objetos json ubibicados en el fichero
 # test-10000-json.txt
