@@ -1,6 +1,6 @@
 package com.softka.massive_trasport.massive_transport_api.entities;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -17,7 +17,7 @@ public class DailySummary {
     private String id;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDate date;
+    private LocalDateTime date;
 
     private double totalAmount;
 

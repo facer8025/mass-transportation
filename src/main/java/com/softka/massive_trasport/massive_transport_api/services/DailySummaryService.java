@@ -9,13 +9,10 @@ import com.softka.massive_trasport.massive_transport_api.repositories.ITransacti
 
 import lombok.extern.slf4j.Slf4j;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.util.List;
+import java.time.format.DateTimeFormatter;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.scheduling.annotation.Scheduled;
 
 @Slf4j
@@ -28,22 +25,20 @@ public class DailySummaryService implements IDailySummaryService {
     @Autowired
     private IDailySummaryRepository dailySummaryRepository;
 
-    @Scheduled(cron = "0 0 0 * * *")
+    @Scheduled(cron = "0 * * * * *")
     public void generateDailySumary() {
 
-        LocalDate today = LocalDate.now();
-        LocalDate yesterday = today.minusDays(1);
-
-        LocalDateTime startOfYesterday = yesterday.atStartOfDay();
-        LocalDateTime endOfYesterday = yesterday.atTime(LocalTime.MAX);
+        LocalDateTime today = LocalDateTime.now();
+        LocalDateTime yesterday = today.minusDays(1);
 
         log.info("Fecha consolidado: " + yesterday);
 
-        var transactions = transactionRepository.findByTimestampBetween(startOfYesterday, endOfYesterday);
+        var transactions = transactionRepository.findAll();
 
         if (!transactions.isEmpty()) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             double totalAmount = transactions.stream()
-                                         .filter(transaction -> transaction.getTimestamp().toLocalDate().equals(yesterday))
+                                         .filter(transaction -> transaction.getTimestamp().format(formatter).equals(yesterday.format(formatter)))
                                          .mapToDouble(Transaction::getAmount)
                                          .sum();
 

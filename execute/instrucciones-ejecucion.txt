@@ -19,7 +19,7 @@ $ docker build -t spring-mass-transportation-image:1.0 .
 cd execute
 
 # En la ruta del docker-compose.yml ejecutar el comando
-# "docker-compose up -d" el cual descargará las imagenes 
+# "docker-compose up -d" el cual descargará las imágenes 
 # de mongo y rabbitmq necesarias para ejecutar la api
 # Versión usadas: mongo:latest y rabbitmq:managment
 $ docker-compose up -d
@@ -28,8 +28,10 @@ $ docker-compose up -d
 # el script ./test ubicado en el directorio ./execute que consumirá, 
 # mediante un ciclo, la api:
 # http://localhost:8080/api/transactions
-# enviando todos los objetos json ubibicados en el fichero
+# enviando todos los objetos json ubicados en el fichero
 # test-10000-json.txt
+# A este archivo se le debe actualizar la fecha del campo timestamp
+# a la fecha del día en que se vaya a probar 
 $ ./test 
 
 # La documentación de la api se realizó mediante springdoc y se 
